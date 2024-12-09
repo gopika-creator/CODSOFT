@@ -1,0 +1,76 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <limits>
+
+using namespace std;
+
+void print_instructions() {
+    cout << "Welcome to the Number Guessing Game!" << endl;
+    cout << "The rules are simple:" << endl;
+    cout << "1. I will select a random number between 1 and 100." << endl;
+    cout << "2. You will try to guess the number." << endl;
+    cout << "3. I will tell you if your guess is too high, too low, or correct." << endl;
+    cout << "4. Keep guessing until you find the right number!" << endl;
+    cout << "Good luck!" << endl;
+    cout << "------------------------------------------------" << endl;
+}
+
+int generate_random_number() {
+    srand(time(0)); // Seed the random number generator
+    return rand() % 100 + 1;
+}
+
+bool play_again() {
+    char choice;
+    while (true) {
+        cout << "Would you like to play again? (y/n): ";
+        cin >> choice;
+        if (choice == 'y' || choice == 'Y') {
+            return true;
+        } else if (choice == 'n' || choice == 'N') {
+            return false;
+        } else {
+            cout << "Invalid choice. Please enter 'y' or 'n'." << endl;
+        }
+    }
+}
+
+void guess_the_number() {
+    int random_number = generate_random_number();
+    int guess;
+
+    cout << "I have selected a number between 1 and 100. Can you guess what it is?" << endl;
+
+    while (true) {
+        cout << "Enter your guess: ";
+        cin >> guess;
+
+        if (cin.fail()) {
+            cin.clear(); // Clear the error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
+            cout << "Invalid input. Please enter a valid number." << endl;
+            continue;
+        }
+
+        if (guess < random_number) {
+            cout << "Too low! Try again." << endl;
+        } else if (guess > random_number) {
+            cout << "Too high! Try again." << endl;
+        } else {
+            cout << "Congratulations! You guessed the correct number: " << random_number << endl;
+            break;
+        }
+    }
+}
+
+int main() {
+    print_instructions();
+
+    do {
+        guess_the_number();
+    } while (play_again());
+
+    cout << "Thank you for playing! Goodbye." << endl;
+    return 0;
+}
